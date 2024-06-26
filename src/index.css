@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mapboxgl-popup {
+  z-index: 50 !important;
+}
+
+.custom-popup .mapboxgl-popup-close-button {
+  padding: 5px;
+}
+
+.corrected-image {
+  image-orientation: from-image;
+  transform: rotate(0deg);
+  max-width: 100%;
+  height: auto;
+}
+
+.logo-container {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1000; 
+}
+
+.logo {
+  width: 100px; 
+  height: auto;
+}
