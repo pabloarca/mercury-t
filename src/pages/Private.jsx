@@ -70,6 +70,11 @@ const Private = () => {
     }
   };
 
+  const updateClasif = () => {
+    console.log('Refrescando datos...');
+    fetchMunicipioData();
+  };
+
   if (!municipioData) {
     return <div>Loading...</div>;
   }
@@ -132,7 +137,8 @@ const Private = () => {
             latitude={popupInfo.latitude}
             properties={popupInfo.properties}
             onClose={() => setPopupInfo(null)}
-            resetModify={() => setPopupInfo((prev) => ({ ...prev, showModify: false }))}
+            municipio={municipio}
+            updateClasif={updateClasif}
           />
         )}
       </Map>

@@ -1,9 +1,10 @@
 // src/components/PrivatePopup.jsx
 import React, { useState, useEffect } from 'react';
 import { Popup as MapboxPopup } from 'react-map-gl';
+import UpdateClasifButton from './UpdateClasifButton';
 
 // Componente que muestra un popup con la información de una parcela
-const PrivatePopup = ({ longitude, latitude, properties, onClose, resetModify }) => {
+const PrivatePopup = ({ longitude, latitude, properties, onClose, municipio, updateClasif }) => {
   const [showModify, setShowModify] = useState(false);
 
   useEffect(() => {
@@ -15,11 +16,6 @@ const PrivatePopup = ({ longitude, latitude, properties, onClose, resetModify })
   };
 
   const handleCancelClick = () => {
-    setShowModify(false);
-  };
-
-  const handleConfirmClick = () => {
-    // Aquí puedes agregar la lógica para manejar la confirmación del estado modificado
     setShowModify(false);
   };
 
@@ -43,10 +39,7 @@ const PrivatePopup = ({ longitude, latitude, properties, onClose, resetModify })
     <MapboxPopup
       longitude={longitude}
       latitude={latitude}
-      onClose={() => {
-        onClose();
-        resetModify();
-      }}
+      onClose={onClose}
       closeOnClick={false}
     >
       <div className="p-2">
@@ -59,22 +52,23 @@ const PrivatePopup = ({ longitude, latitude, properties, onClose, resetModify })
         <p><strong>Address:</strong> {properties.dire}</p>
         <p><strong>Information:</strong> {properties.informatio}</p>
         
-        <button
-          className="mt-2 bg-blue-500 text-white py-1 px-3 rounded"
-          onClick={handleModifyClick}
-        >
-          Modificar estado
-        </button>
+        {properties.clasif !== 3 && (
+          <button
+            className="mt-2 bg-blue-500 text-white py-1 px-3 rounded"
+            onClick={handleModifyClick}
+          >
+            Modificar estado
+          </button>
+        )}
 
-        {showModify && (
+        {showModify && properties.clasif !== 3 && (
           <div className="mt-2">
             <p className="text-sm">{dynamicMessage}</p>
-            <button
-              className="mt-2 bg-green-500 text-white py-1 px-3 rounded mr-2"
-              onClick={handleConfirmClick}
-            >
-              Confirmar
-            </button>
+            <UpdateClasifButton
+              municipio={municipio}
+              featureId={properties.codigo}
+              updateClasif={updateClasif}
+            />
             <button
               className="mt-2 bg-red-500 text-white py-1 px-3 rounded"
               onClick={handleCancelClick}
