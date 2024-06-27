@@ -41,6 +41,8 @@ const PrivatePopup = ({ longitude, latitude, properties, onClose, municipio, upd
       latitude={latitude}
       onClose={onClose}
       closeOnClick={false}
+      anchor="top"
+      className="z-50 custom-popup"
     >
       <div className="p-2">
       {properties.documentLi && (

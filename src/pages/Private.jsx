@@ -5,6 +5,8 @@ import { ref, get } from 'firebase/database';
 import Map, { Source, Layer, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PrivatePopup from '../components/PrivatePopup';
+import { Legend, Logo } from '../components/Legend';
+import MapStyleToggle from '../components/MapStyleToggle';
 
 const Private = () => {
   const { municipio } = useParams();
@@ -75,6 +77,16 @@ const Private = () => {
     fetchMunicipioData();
   };
 
+  const toggleMapStyle = () => {
+    setMapStyle(prevStyle => 
+      prevStyle === 'mapbox://styles/mapbox/light-v11' 
+      ? 'mapbox://styles/mapbox/satellite-v9' 
+      : 'mapbox://styles/mapbox/light-v11'
+    );
+  };
+
+
+
   if (!municipioData) {
     return <div>Loading...</div>;
   }
@@ -116,16 +128,7 @@ const Private = () => {
               id="data-fill"
               type="fill"
               paint={{
-                'fill-color': {
-                  type: 'categorical',
-                  property: 'clasif',
-                  stops: [
-                    [1, 'rgba(255,0,0,0.5)'],
-                    [2, 'rgba(148,0,211,0.5)'],
-                    [3, 'rgba(0,255,0,0.5)'],
-                    [4, 'rgba(0,191,255,0.5)'],
-                  ],
-                },
+                'fill-color': 'rgba(0, 0, 0, 0)', // Relleno transparente
               }}
             />
           </Source>
@@ -142,6 +145,9 @@ const Private = () => {
           />
         )}
       </Map>
+      <Logo />
+      <Legend />
+      <MapStyleToggle toggleMapStyle={toggleMapStyle} />
     </div>
   );
 };
