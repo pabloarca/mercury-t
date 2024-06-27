@@ -43,14 +43,30 @@ const PrivatePopup = ({ longitude, latitude, properties, onClose, municipio, upd
       closeOnClick={false}
     >
       <div className="p-2">
-        <h3 className="text-lg font-bold">Parcel Information</h3>
-        <p><strong>Code:</strong> {properties.codigo}</p>
-        <p><strong>Document:</strong> {properties.documentLi}</p>
-        <p><strong>Local ID:</strong> {properties.localId}</p>
-        <p><strong>Building Type:</strong> {properties.Tipo_edif}</p>
-        <p><strong>Construction Date:</strong> {properties.fecha_cons}</p>
-        <p><strong>Address:</strong> {properties.dire}</p>
-        <p><strong>Information:</strong> {properties.informatio}</p>
+      {properties.documentLi && (
+          <img
+            src={properties.documentLi}
+            alt="Image"
+            className="max-w-full h-auto pt-2 corrected-image"
+          />
+        )}
+        <h3 className="font-bold pt-3">Código identificador {properties.codigo}</h3>
+        <p><strong>Refcat:</strong> {properties.localId}</p>
+        <p><strong>Tipo:</strong> {properties.Tipo_edif}</p>
+        <p><strong>Fecha de construcción:</strong> {properties.fecha_cons}</p>
+        <p><strong>Dirección:</strong> {properties.dire}</p>
+        {properties.informatio && (
+          <p>
+            <a 
+              href={properties.informatio} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              Link a Catastro
+            </a>
+          </p>
+        )}
         
         {properties.clasif !== 3 && (
           <button
@@ -63,14 +79,14 @@ const PrivatePopup = ({ longitude, latitude, properties, onClose, municipio, upd
 
         {showModify && properties.clasif !== 3 && (
           <div className="mt-2">
-            <p className="text-sm">{dynamicMessage}</p>
+            <p className="text-xs pt-4">{dynamicMessage}</p>
             <UpdateClasifButton
               municipio={municipio}
               featureId={properties.codigo}
               updateClasif={updateClasif}
             />
             <button
-              className="mt-2 bg-red-500 text-white py-1 px-3 rounded"
+              className="mt-2 bg-red-400 text-white py-1 px-3 rounded"
               onClick={handleCancelClick}
             >
               Cancelar
