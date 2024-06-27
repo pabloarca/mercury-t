@@ -19,7 +19,7 @@ const Legend = () => {
       </div>
       <div className="flex items-center">
         <span className="w-4 h-4 inline-block mr-2" style={{ backgroundColor: '#00BFFF' }}></span>
-        <span>Edificios públicos</span>
+        <span>Edificios públicos sin amianto</span>
       </div>
     </div>
   );

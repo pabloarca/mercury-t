@@ -1,6 +1,5 @@
-// src/pages/Home.jsx
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, database } from '../firebaseConfig';
 import { ref, get } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
@@ -33,10 +32,24 @@ const Home = () => {
     }
   };
 
+  const handleResetPassword = async () => {
+    if (!email) {
+      alert("Por favor, ingresa tu email para restablecer la contraseña.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Se ha enviado un enlace para restablecer tu contraseña a tu email.");
+    } catch (error) {
+      console.error("Error al enviar email para restablecer contraseña: ", error);
+      alert("Error al enviar email para restablecer contraseña, verifica que el email sea correcto.");
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/monochrome.jpg)' }}>  
+    <div className="flex items-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/monochrome.jpg)' }}>
       <div className="bg-white p-6 rounded shadow-md w-80">
-        <h1 className="text-xl mb-4">Login</h1>
+        <h1 className="text-xl mb-4">Accede al mapa</h1>
         <input
           type="email"
           className="mb-2 p-2 w-full border"
@@ -52,11 +65,18 @@ const Home = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button
-          className="bg-blue-500 text-white p-2 w-full"
+          className="bg-blue-500 text-white p-2 w-full mb-2"
           onClick={handleLogin}
         >
           Acceder
         </button>
+        <button
+          className="bg-transparent text-blue-500 hover:text-blue-800 p-2 w-full"
+          onClick={handleResetPassword}
+        >
+          Restablecer contraseña
+        </button>
+        
       </div>
     </div>
   );
