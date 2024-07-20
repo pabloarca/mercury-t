@@ -1,8 +1,9 @@
+// src/pages/Home.jsx
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, database } from '../firebaseConfig';
 import { ref, get } from 'firebase/database';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [email, setEmail] = useState('');
@@ -12,20 +13,24 @@ const Home = () => {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      const sanitizedEmail = email.replace('.', ',');
-      const snapshot = await get(ref(database, `municipios`));
-      let municipio = null;
-      snapshot.forEach(childSnapshot => {
-        const childData = childSnapshot.val();
-        if (childData.usuario === sanitizedEmail) {
-          municipio = childSnapshot.key;
-        }
-      });
-
-      if (municipio) {
-        navigate(`/user/${municipio}`);
+      if (email === 'master@gmail.com') {
+        navigate('/master-dashboard');
       } else {
-        console.error("Municipio not found for this user");
+        const sanitizedEmail = email.replace('.', ',');
+        const snapshot = await get(ref(database, `municipios`));
+        let municipio = null;
+        snapshot.forEach(childSnapshot => {
+          const childData = childSnapshot.val();
+          if (childData.usuario === sanitizedEmail) {
+            municipio = childSnapshot.key;
+          }
+        });
+
+        if (municipio) {
+          navigate(`/user/${municipio}`);
+        } else {
+          console.error("Municipio not found for this user");
+        }
       }
     } catch (error) {
       console.error("Error logging in: ", error);
@@ -83,7 +88,7 @@ const Home = () => {
       </div>
       <div className="mt-8 text-center">
         <img src="/logo.png" alt="Logo" className="h-16 mx-auto mb-6" />
-        <div className="flex justify-around w-full ">
+        <div className="flex justify-around w-full">
           <a href="https://ast-amianto.es/" className="text-blue-900 pr-20 hover:underline">Página principal</a>
           <a href="https://ast-amianto.es/servicios" className="text-blue-900 pr-20 hover:underline">Servicios</a>
           <a href="https://ast-amianto.es/contacto" className="text-blue-900 pr-20 hover:underline">Contacto</a>

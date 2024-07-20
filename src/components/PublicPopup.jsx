@@ -31,8 +31,7 @@ const PublicPopup = ({ popupInfo, onClose }) => {
             className="max-w-full h-auto pt-2 corrected-image"
           />
         )}
-        <h3 className="font-bold pt-3">Código identificador {properties.codigo}</h3>
-        <p><strong>Refcat:</strong> {properties.localId}</p>
+        <h3 className="font-bold pt-3">Referencia {properties.localId}</h3>
         <p><strong>Tipo:</strong> {properties.Tipo_edif}</p>
         <p><strong>Fecha de construcción:</strong> {properties.fecha_cons}</p>
         <p><strong>Dirección:</strong> {properties.dire}</p>

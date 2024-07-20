@@ -1,3 +1,4 @@
+// src/pages/Private.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth, database } from '../firebaseConfig';
@@ -7,6 +8,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import PrivatePopup from '../components/PrivatePopup';
 import { Legend, Logo } from '../components/Legend';
 import MapStyleToggle from '../components/MapStyleToggle';
+import DownloadCsv from '../components/DownloadCsv';
 
 const Private = () => {
   const { municipio } = useParams();
@@ -26,7 +28,11 @@ const Private = () => {
         const municipioRef = ref(database, `municipios/${municipio}`);
         const snapshot = await get(municipioRef);
 
-        if (snapshot.exists() && snapshot.val().usuario === sanitizedEmail) {
+        // Verifica si el usuario es el master o el usuario del municipio
+        if (
+          snapshot.exists() && 
+          (snapshot.val().usuario === sanitizedEmail || user.email === 'master@gmail.com')
+        ) {
           setMunicipioData(snapshot.val());
           const parcelas = Object.values(snapshot.val().parcelas).map(parcela => ({
             type: 'Feature',
@@ -84,8 +90,6 @@ const Private = () => {
       : 'mapbox://styles/mapbox/light-v11'
     );
   };
-
-
 
   if (!municipioData) {
     return <div>Loading...</div>;
@@ -148,6 +152,8 @@ const Private = () => {
       <Logo />
       <Legend />
       <MapStyleToggle toggleMapStyle={toggleMapStyle} />
+      {/*<DownloadCsv municipio={municipio} /> */}
+      
     </div>
   );
 };
